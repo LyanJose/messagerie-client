@@ -1,16 +1,25 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { createMessage } from '../actions/messages'
+import io from 'socket.io-client'
+
+let socket;
 
 const NewMessage = () => {
 
     const [messageData, setMessageData] = useState({ pseudo: '', message: '' })
     const dispatch = useDispatch()
 
+    socket = io('localhost:8000', { transports: ['websocket'] })
+
     const handleSubmit = (e) => {
         e.preventDefault()
+
+        socket.emit('sendMessage', messageData)
+
         dispatch(createMessage(messageData))
         setMessageData({ pseudo: '', message: '' })
+
     }
 
     return (
