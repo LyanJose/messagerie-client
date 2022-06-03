@@ -20,12 +20,13 @@ const App = () => {
     dispatch(getMessages())
 
     socket = io('localhost:8000', { transports: ['websocket'] })
-
     socket.on('sendMessage', ({ pseudo, message }) => {
+      
       const newMessages = {pseudo, message} 
       console.log(newMessages)
+      messages.push(newMessages)
+
     })
-    
   }, [dispatch])
 
   return (
